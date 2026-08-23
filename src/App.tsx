@@ -746,8 +746,8 @@ interface StatsProps {
 
 const Stats: React.FC<StatsProps> = React.memo(({ t }) => {
     const statsData = useMemo(() => [
-        { value: '1', label: t.projectsLabel, sublabel: t.projectsSub },
-        { value: '2', label: t.expertsLabel, sublabel: t.expertsSub },
+        { value: '>10', label: t.projectsLabel, sublabel: t.projectsSub },
+        { value: '>5', label: t.expertsLabel, sublabel: t.expertsSub },
         { value: 'ZERO', label: t.ltiLabel, sublabel: t.ltiSub },
     ], [t]);
 
@@ -1184,7 +1184,7 @@ export default function App() {
                     <Stats t={currentText.stats} />
                     <About t={currentText.about} />
                     <Projects t={currentText.projects} onSelectProject={setSelectedProject} />
-                    {/*<Advantages t={currentText.advantages} />*/}
+                    <Advantages t={currentText.advantages} />
                     <Contact t={currentText.contact} />
                 </main>
             )}
