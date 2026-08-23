@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import FloatingWhatsApp from "./FloatingWhatsapp.tsx";
+import ProjectDetail from "./ProjectDetail.tsx";
 
 // 1. Tipe Data & Kamus Bahasa
 type Language = 'ID' | 'EN';
@@ -53,6 +54,7 @@ interface ContentDictionary {
             location: string;
             category: string;
             desc: string;
+            fullDesc: string;
             image: string;
         }>;
     };
@@ -114,9 +116,9 @@ const content: Record<Language, ContentDictionary> = {
             yearsLabel: 'Tahun Pengalaman',
             yearsSub: 'Dedikasi Geoteknik Tambang',
             projectsLabel: 'Proyek Selesai',
-            projectsSub: 'Pit Slope, TSF & Disposal',
+            projectsSub: '',
             expertsLabel: 'Tenaga Ahli',
-            expertsSub: 'Bersertifikat PERHAPI & KCMI',
+            expertsSub: '',
             ltiLabel: 'Rekor Safety',
             ltiSub: 'Zero Accident di Area Tambang'
         },
@@ -136,38 +138,59 @@ const content: Record<Language, ContentDictionary> = {
             desc: 'Beberapa studi kasus dan proyek strategis yang telah berhasil diselesaikan oleh tim tenaga ahli kami di berbagai medan pertambangan.',
             items: [
                 {
-                    title: 'Stabilitas Lereng Highwall 250m',
-                    location: 'Kalimantan Timur',
-                    category: 'Pit Slope',
-                    desc: 'Optimasi sudut kemiringan lereng tambang batubara terbuka menggunakan pemodelan numerik FLAC3D.',
-                    image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80'
-                },
-                {
-                    title: 'Audit Geoteknik & Likuifaksi TSF',
-                    location: 'Sumbawa, NTB',
-                    category: 'TSF Dam',
-                    desc: 'Analisis kesetimbangan batas untuk mitigasi kelongsoran dan keamanan bendungan tailing.',
+                    title: 'PT Bina Insan Sukses Mandiri – Geoteknik & Hidrologi (Fase 1)',
+                    location: 'Kalimantan Timur, Indonesia',
+                    category: 'Mine Geotechnical',
+                    desc: 'Studi komprehensif geoteknik tambang dan hidrologi-hidrogeologi untuk mendukung operasi penambangan yang aman, mencakup desain lereng dan manajemen air permukaan.',
+                    fullDesc: 'Menyediakan layanan studi geoteknik tambang dan hidrologi-hidrogeologi yang komprehensif untuk mendukung operasi penambangan yang aman dan berkelanjutan. Studi ini melibatkan penilaian kondisi geologi, geoteknik, air permukaan, dan air tanah di dalam area penambangan. Aktivitas utama meliputi tinjauan dan interpretasi data geologi dan geoteknik yang tersedia, karakterisasi kondisi tanah dan massa batuan, penilaian stabilitas lereng dan risiko geoteknik, serta evaluasi kondisi air permukaan dan air tanah. Studi ini mengintegrasikan investigasi lapangan, analisis data, penilaian rekayasa, dan rekomendasi teknis untuk mendukung perencanaan tambang, desain lereng, pengelolaan air, dan manajemen risiko geoteknik secara keseluruhan.',
                     image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Investigasi Geofisika & Penirisan Disposal',
-                    location: 'Halmahera, Maluku Utara',
-                    category: 'Disposal Area',
-                    desc: 'Perancangan kapasitas tampung waste dump dan sistem drainase anti-erosi curah hujan tinggi.',
-                    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80'
+                    title: 'PT Bina Insan Sukses Mandiri – Geoteknik & Hidrologi (Fase 2)',
+                    location: 'Kalimantan Timur, Indonesia',
+                    category: 'Mine Geotechnical',
+                    desc: 'Evaluasi kondisi tanah dan risiko terkait air untuk memberikan rekomendasi rekayasa praktis pada pengembangan tambang, manajemen lereng, dan sistem drainase.',
+                    fullDesc: 'Melakukan penilaian geoteknik tambang dan hidrologi-hidrogeologi untuk mengevaluasi kondisi tanah dan risiko terkait air yang terkait dengan aktivitas penambangan. Proyek ini mencakup tinjauan dan analisis informasi geologi dan geoteknik, penilaian karakteristik tanah dan massa batuan, pertimbangan stabilitas lereng, dan evaluasi kondisi hidrologi serta hidrogeologi. Studi ini bertujuan untuk membangun pemahaman terpadu tentang kondisi tanah dan air serta memberikan rekomendasi rekayasa praktis untuk pengembangan tambang, manajemen lereng, pengendalian drainase dan air, serta mitigasi risiko geoteknik.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Geoteknik Terowongan & Underground Mining',
-                    location: 'Tembagapura, Papua',
-                    category: 'Underground Geotech',
-                    desc: 'Analisis tegangan batuan dan perancangan sistem penyanggaan (rock bolting & shotcrete) pada terowongan tambang bawah tanah.',
-                    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'
+                    title: 'PT Abadi Ogan Cemerlang – Studi Jalan Angkut (Hauling Road)',
+                    location: 'Sumatera Selatan, Indonesia',
+                    category: 'Haul Road Study',
+                    desc: 'Investigasi geoteknik (SPT, CPT, dan uji lab tanah) untuk karakterisasi tanah dasar dan perancangan struktur perkerasan jalan angkut tambang.',
+                    fullDesc: 'Melakukan studi geoteknik untuk pengembangan dan evaluasi jalan angkut tambang guna mendukung operasi transportasi yang aman, andal, dan efisien. Studi ini mencakup perencanaan dan pengawasan investigasi lapangan, termasuk uji Standard Penetration Test in-situ, Cone Penetration Test (CPT), pengambilan sampel tanah, dan uji laboratorium tanah. Data yang diperoleh digunakan untuk mengkarakterisasi kondisi tanah dasar dan dekat permukaan, mengevaluasi sifat rekayasa, dan menilai kesesuaian trase jalan yang ada dan yang diusulkan. Studi ini memberikan rekomendasi rekayasa untuk penyiapan tanah dasar, struktur perkerasan, geometri jalan, pertimbangan drainase, dan manajemen risiko geoteknik.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Investigasi Kestabilan Lereng Jalan Tambang',
-                    location: 'Lahad, Sumatera Selatan',
-                    category: 'Haul Road Geotech',
-                    desc: 'Evaluasi daya dukung tanah dasar dan mitigasi kelongsoran pada jalur angkut alat berat (haul road) berkapasitas 100 ton.',
+                    title: 'Bathwall Corporation – Pengeboran Eksplorasi Batu Gamping',
+                    location: 'Jawa Barat, Indonesia',
+                    category: 'Exploration Drilling',
+                    desc: 'Program pengeboran eksplorasi untuk menginvestigasi stratigrafi bawah permukaan, distribusi, ketebalan, dan kualitas sumber daya batu gamping.',
+                    fullDesc: 'Memberikan dukungan teknis untuk program pengeboran eksplorasi batu gamping yang bertujuan menyelidiki kondisi geologi bawah permukaan dan mengevaluasi sumber daya batu gamping. Proyek ini melibatkan aktivitas pengeboran untuk mendapatkan informasi geologi bawah permukaan, didukung oleh logging geologi dan geoteknik, penilaian perolehan inti (core recovery), penanganan sampel, dan dokumentasi kondisi litologi yang ditemukan. Data eksplorasi digunakan untuk mengembangkan pemahaman tentang stratigrafi bawah permukaan, distribusi batu gamping, ketebalan, kualitas, dan kontinuitas geologi, memberikan informasi penting untuk evaluasi sumber daya lebih lanjut dan perencanaan pengembangan tambang.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'PT Volta Indo Technology – Survei Geolistrik PLTM',
+                    location: 'Pongkor, Jawa Barat, Indonesia',
+                    category: 'Geophysics Survey',
+                    desc: 'Investigasi geolistrik untuk mengidentifikasi struktur geologi bawah permukaan guna mendukung desain fondasi infrastruktur Pembangkit Listrik Tenaga Mikrohidro (PLTM).',
+                    fullDesc: 'Melakukan investigasi geolistrik untuk mendukung penilaian geologi dan bawah permukaan bagi pengembangan Pembangkit Listrik Tenaga Mikrohidro (PLTM) di Pongkor, Jawa Barat. Investigasi ini dirancang untuk mengidentifikasi struktur geologi bawah permukaan dan variasi resistivitas listrik yang terkait dengan berbagai material tanah dan batuan, kondisi pelapukan, dan potensi diskontinuitas geologi. Hasil survei diinterpretasikan untuk mengembangkan model geologi bawah permukaan dan mendukung penilaian rekayasa dari area infrastruktur yang diusulkan, termasuk identifikasi potensi kondisi tanah yang relevan dengan desain fondasi dan struktur sipil.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'Bathwall Corporation – Survei Geomagnetik Bijih Besi',
+                    location: 'Bukit Besi, Terengganu, Malaysia',
+                    category: 'Geophysics Survey',
+                    desc: 'Akuisisi dan interpretasi data medan magnetik untuk mendelineasi anomali bawah permukaan yang berasosiasi dengan target eksplorasi dan mineralisasi bijih besi.',
+                    fullDesc: 'Memberikan layanan teknis untuk program eksplorasi geomagnetik bijih besi di Bukit Besi, Terengganu, Malaysia. Proyek ini melibatkan akuisisi dan interpretasi data medan magnetik untuk mengidentifikasi anomali magnetik bawah permukaan yang terkait dengan potensi mineralisasi bijih besi dan struktur geologi. Data survei diproses dan diinterpretasikan untuk mendelineasi area dengan respons magnetik anomali, menetapkan tren geologi, dan mendukung identifikasi target eksplorasi potensial. Hasilnya berkontribusi pada pemahaman geologi area eksplorasi dan memberikan dasar untuk kegiatan eksplorasi dan pengeboran selanjutnya.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'PT Supreme Energy Muara Laboh – Investigasi Washbore',
+                    location: 'Sumatera Barat, Indonesia',
+                    category: 'Foundation Geotech',
+                    desc: 'Pengeboran washbore untuk mendapatkan informasi stratigrafi tanah dan batuan guna membangun model bawah permukaan yang andal bagi desain fondasi.',
+                    fullDesc: 'Menyediakan layanan pengeboran washbore dan investigasi fondasi untuk mendukung karakterisasi geoteknik kondisi bawah permukaan bagi pengembangan infrastruktur. Investigasi dilakukan untuk mendapatkan informasi tentang stratigrafi tanah dan batuan, kedalaman dan karakteristik material bawah permukaan, serta kondisi rekayasa yang relevan untuk desain fondasi. Data lapangan yang diperoleh, termasuk catatan pengeboran dan observasi bawah permukaan, digunakan untuk mengevaluasi kondisi tanah dan memberikan informasi geoteknik yang diperlukan untuk penilaian fondasi dan desain rekayasa. Proyek ini mendukung pengembangan model bawah permukaan yang andal dan berkontribusi pada solusi fondasi yang lebih aman dan tepat.',
                     image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 }
             ]
@@ -245,9 +268,9 @@ const content: Record<Language, ContentDictionary> = {
             yearsLabel: 'Years Experience',
             yearsSub: 'Dedicated Mining Geotechnics',
             projectsLabel: 'Projects Completed',
-            projectsSub: 'Pit Slope, TSF & Disposal',
+            projectsSub: '',
             expertsLabel: 'Expert Engineers',
-            expertsSub: 'PERHAPI & KCMI Certified',
+            expertsSub: '',
             ltiLabel: 'Safety Record',
             ltiSub: 'Zero Accident in Mine Sites'
         },
@@ -267,38 +290,59 @@ const content: Record<Language, ContentDictionary> = {
             desc: 'Selected case studies and strategic projects successfully delivered by our expert engineering team across various mining terrains.',
             items: [
                 {
-                    title: '250m Deep Highwall Slope Stability',
-                    location: 'East Kalimantan',
-                    category: 'Pit Slope',
-                    desc: 'Optimization of open-pit coal mine slope angles using FLAC3D numerical modeling.',
-                    image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80'
-                },
-                {
-                    title: 'TSF Dam Geotechnical & Liquefaction Audit',
-                    location: 'Sumbawa, NTB',
-                    category: 'TSF Dam',
-                    desc: 'Limit equilibrium analysis to mitigate slope failure risks and ensure tailing dam safety.',
+                    title: 'PT Bina Insan Sukses Mandiri – Geotech & Hydrology Phase 1',
+                    location: 'East Kalimantan, Indonesia',
+                    category: 'Mine Geotechnical',
+                    desc: 'Comprehensive mine geotechnical and hydrology study assessing geological, surface water, and groundwater conditions to support slope design and water management.',
+                    fullDesc: 'Provided comprehensive mine geotechnical and hydrology-hydrogeology study services to support safe and sustainable mining operations. The study involved the assessment of geological, geotechnical, surface water, and groundwater conditions within the mining area. Key activities included review and interpretation of available geological and geotechnical data, characterization of soil and rock mass conditions, assessment of slope stability and geotechnical risks, as well as evaluation of surface water and groundwater conditions. The study integrated field investigation, data analysis, engineering assessment, and technical recommendations to support mine planning, slope design, water management, and overall geotechnical risk management.',
                     image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Geophysics & Disposal Drainage Investigation',
-                    location: 'Halmahera, North Maluku',
-                    category: 'Disposal Area',
-                    desc: 'High-capacity waste dump design and anti-erosion drainage under heavy rainfall conditions.',
-                    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80'
+                    title: 'PT Bina Insan Sukses Mandiri – Geotech & Hydrology Phase 2',
+                    location: 'East Kalimantan, Indonesia',
+                    category: 'Mine Geotechnical',
+                    desc: 'Evaluated ground conditions and water-related risks, providing practical engineering recommendations for mine development, slope management, and drainage control.',
+                    fullDesc: 'Conducted a mine geotechnical and hydrology-hydrogeology assessment to evaluate ground conditions and water-related risks associated with mining activities. The project included the review and analysis of geological and geotechnical information, assessment of soil and rock mass characteristics, slope stability considerations, and evaluation of hydrological and hydrogeological conditions. The study aimed to establish an integrated understanding of ground and water conditions and provide practical engineering recommendations for mine development, slope management, drainage and water control, and geotechnical risk mitigation.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Underground Mining & Tunnel Geotechnics',
-                    location: 'Tembagapura, Papua',
-                    category: 'Underground Geotech',
-                    desc: 'Rock stress analysis and ground support system design (rock bolting & shotcrete) in underground mining tunnels.',
-                    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'
+                    title: 'PT Abadi Ogan Cemerlang – Hauling Road Study',
+                    location: 'South Sumatera, Indonesia',
+                    category: 'Haul Road Study',
+                    desc: 'Geotechnical study including in-situ SPT, CPT, and soil sampling to characterize subgrade conditions and provide recommendations for pavement structure and drainage.',
+                    fullDesc: 'Performed a geotechnical study for the development and evaluation of a mining hauling road to support safe, reliable, and efficient transportation operations. The study included planning and supervision of field investigations, including in-situ Standard Penetration Test, Cone Penetration Test (CPT), soil sampling, and soil laboratory test. The acquired data were used to characterize subgrade and near-surface ground conditions, evaluate engineering properties, and assess the suitability of existing and proposed road alignments. The study provided engineering recommendations for subgrade preparation, pavement structure, road geometry, drainage considerations, and geotechnical risk management.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 },
                 {
-                    title: 'Haul Road Slope Stability Investigation',
-                    location: 'Lahad, South Sumatra',
-                    category: 'Haul Road Geotech',
-                    desc: 'Subgrade bearing capacity evaluation and slope failure mitigation for 100-ton capacity heavy equipment haul roads.',
+                    title: 'Bathwall Corporation – Limestone Exploration Drilling',
+                    location: 'West Java, Indonesia',
+                    category: 'Exploration Drilling',
+                    desc: 'Limestone exploration drilling program to develop an understanding of subsurface stratigraphy, limestone distribution, thickness, and geological continuity.',
+                    fullDesc: 'Provided technical support for a limestone exploration drilling program aimed at investigating subsurface geological conditions and evaluating limestone resources. The project involved drilling activities to obtain subsurface geological information, supported by geological and geotechnical logging, core recovery assessment, sample handling, and documentation of encountered lithological conditions. The exploration data were used to develop an understanding of subsurface stratigraphy, limestone distribution, thickness, quality, and geological continuity, providing essential information for further resource evaluation and mine development planning.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'PT Volta Indo Technology – Geoelectrical Survey (PLTM)',
+                    location: 'Pongkor, West Java, Indonesia',
+                    category: 'Geophysics Survey',
+                    desc: 'Geoelectrical investigation designed to identify subsurface geological structures and potential discontinuities to support Mini-Hydropower Plant foundation design.',
+                    fullDesc: 'Conducted a geoelectrical investigation to support the geological and subsurface assessment for the development of a Mini-Hydropower Plant (PLTM) in Pongkor, West Java. The investigation was designed to identify subsurface geological structures and variations in electrical resistivity associated with different soil and rock materials, weathering conditions, and potential geological discontinuities. The survey results were interpreted to develop a subsurface geological model and support engineering assessment of the proposed infrastructure area, including identification of potential ground conditions relevant to foundation and civil structure design.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'Bathwall Corporation – Geomagnetic Survey',
+                    location: 'Bukit Besi, Terengganu, Malaysia',
+                    category: 'Geophysics Survey',
+                    desc: 'Geomagnetic exploration program to delineate anomalous magnetic responses and establish geological trends for potential iron ore mineralization targets.',
+                    fullDesc: 'Provided technical services for a geomagnetic exploration program for iron ore in Bukit Besi, Terengganu, Malaysia. The project involved acquisition and interpretation of magnetic field data to identify subsurface magnetic anomalies associated with potential iron ore mineralization and geological structures. The survey data were processed and interpreted to delineate areas of anomalous magnetic response, establish geological trends, and support the identification of potential exploration targets. The results contributed to the geological understanding of the exploration area and provided a basis for subsequent exploration and drilling activities.',
+                    image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
+                },
+                {
+                    title: 'PT Supreme Energy Muara Laboh – Washbore Investigation',
+                    location: 'West Sumatera, Indonesia',
+                    category: 'Foundation Geotech',
+                    desc: 'Washbore drilling and foundation investigation services to characterize soil and rock stratigraphy and depth for safe and appropriate foundation engineering design.',
+                    fullDesc: 'Provided washbore drilling and foundation investigation services to support the geotechnical characterization of subsurface conditions for infrastructure development. The investigation was conducted to obtain information on soil and rock stratigraphy, depth and characteristics of subsurface materials, and relevant engineering conditions for foundation design. The acquired field data, including drilling records and subsurface observations, were used to evaluate ground conditions and provide geotechnical information required for foundation assessment and engineering design. The project supported the development of a reliable subsurface model and contributed to safer and more appropriate foundation solutions.',
                     image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80'
                 }
             ]
@@ -702,16 +746,16 @@ interface StatsProps {
 
 const Stats: React.FC<StatsProps> = React.memo(({ t }) => {
     const statsData = useMemo(() => [
-        { value: '15+', label: t.yearsLabel, sublabel: t.yearsSub },
-        { value: '350+', label: t.projectsLabel, sublabel: t.projectsSub },
-        { value: '50+', label: t.expertsLabel, sublabel: t.expertsSub },
+        { value: '1', label: t.projectsLabel, sublabel: t.projectsSub },
+        { value: '2', label: t.expertsLabel, sublabel: t.expertsSub },
         { value: 'ZERO', label: t.ltiLabel, sublabel: t.ltiSub },
     ], [t]);
 
     return (
         <section aria-label="Company Statistics" className="relative z-20 -mt-16 md:-mt-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
             <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-6 md:p-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
+                {/* Grid disesuaikan menjadi 3 kolom agar seimbang */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
                     {statsData.map((item, index) => (
                         <div key={index} className={`text-center ${index > 0 ? 'pt-4 sm:pt-0 sm:px-4' : 'sm:pr-4'}`}>
                             <p className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{item.value}</p>
@@ -761,9 +805,10 @@ About.displayName = 'About';
 // 7. Komponen Portofolio (Projects - Dioptimasi dengan GPU Hardware Acceleration & Debounced Resize)
 interface ProjectsProps {
     t: ContentDictionary['projects'];
+    onSelectProject: (project: any) => void;
 }
 
-const Projects: React.FC<ProjectsProps> = React.memo(({ t }) => {
+const Projects: React.FC<ProjectsProps> = React.memo(({ t, onSelectProject }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const [itemsPerView, setItemsPerView] = useState(1);
@@ -881,7 +926,6 @@ const Projects: React.FC<ProjectsProps> = React.memo(({ t }) => {
                             >
                                 <article className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col justify-between border border-gray-100 hover:-translate-y-2 h-full">
                                     <div>
-                                        {/* Gambar Dioptimasi dengan decoding async, fetchPriority, dan Dimensi Eksplisit (Mencegah CLS) */}
                                         <div className="relative h-56 overflow-hidden">
                                             <img
                                                 src={item.image}
@@ -911,12 +955,14 @@ const Projects: React.FC<ProjectsProps> = React.memo(({ t }) => {
 
                                     <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center mt-4">
                                         <span className="text-xs font-bold text-gray-400">Case Study #{idx + 1}</span>
-                                        <a
-                                            href="#contact"
-                                            className="text-xs font-extrabold text-coreterra-brown group-hover:translate-x-1 transition-transform duration-200 inline-block"
+                                        {/* 2. Tombol ini sekarang memanggil onSelectProject dengan data 'item' */}
+                                        <button
+                                            type="button"
+                                            onClick={() => onSelectProject(item)}
+                                            className="text-xs font-extrabold text-coreterra-brown group-hover:translate-x-1 transition-transform duration-200 inline-block cursor-pointer focus:outline-none"
                                         >
                                             Detail &rarr;
-                                        </a>
+                                        </button>
                                     </div>
                                 </article>
                             </div>
@@ -1114,6 +1160,7 @@ Footer.displayName = 'Footer';
 // 11. Komponen Utama (App)
 export default function App() {
     const [lang, setLang] = useState<Language>('EN');
+    const [selectedProject, setSelectedProject] = useState<any | null>(null);
     const currentText = useMemo(() => content[lang], [lang]);
 
     const handleSetLang = useCallback((newLang: Language) => {
@@ -1125,14 +1172,22 @@ export default function App() {
             <SEO lang={lang} seoData={currentText.seo} />
             <FloatingWhatsApp lang={lang} />
             <Navbar lang={lang} setLang={handleSetLang} t={currentText.nav} />
-            <main id="main-content">
-                <Hero t={currentText.hero} />
-                <Stats t={currentText.stats} />
-                <About t={currentText.about} />
-                <Projects t={currentText.projects} />
-                <Advantages t={currentText.advantages} />
-                <Contact t={currentText.contact} />
-            </main>
+            {selectedProject ? (
+                <ProjectDetail
+                    project={selectedProject}
+                    onBack={() => setSelectedProject(null)}
+                    tCta={currentText.nav.cta}
+                />
+            ) : (
+                <main id="main-content">
+                    <Hero t={currentText.hero} />
+                    <Stats t={currentText.stats} />
+                    <About t={currentText.about} />
+                    <Projects t={currentText.projects} onSelectProject={setSelectedProject} />
+                    {/*<Advantages t={currentText.advantages} />*/}
+                    <Contact t={currentText.contact} />
+                </main>
+            )}
             <Footer t={currentText.footer} />
         </div>
     );
