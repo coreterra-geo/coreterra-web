@@ -1,0 +1,21 @@
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { newsArticles } from '../data/news'
+
+function AdminDashboard() {
+  const [query, setQuery] = useState('')
+  const [status, setStatus] = useState('All status')
+  const [notice, setNotice] = useState('')
+  const articles = useMemo(() => newsArticles.filter((article) => {
+    const matchesQuery = `${article.title} ${article.category}`.toLowerCase().includes(query.toLowerCase())
+    const matchesStatus = status === 'All status' || status === 'Published'
+    return matchesQuery && matchesStatus
+  }), [query, status])
+
+  return <div className="admin-shell">
+    <aside className="admin-sidebar"><Link className="admin-brand" to="/admin" aria-label="Coreterra admin dashboard"><img src="/logo.png" alt="" width="42" height="42" /><span><strong>CORETERRA</strong><small>ADMIN CONSOLE</small></span></Link><nav className="admin-nav" aria-label="Admin navigation"><p>WORKSPACE</p><Link to="/admin" className="is-active"><span>◈</span>Overview</Link><Link to="/admin"><span>▤</span>News management</Link><Link to="/admin"><span>□</span>Media library</Link><p>CONFIGURATION</p><Link to="/admin"><span>⚙</span>Settings</Link></nav><div className="admin-sidebar-bottom"><Link to="/">View website <span aria-hidden="true">-&gt;</span></Link><div className="admin-user"><span>AD</span><div><strong>Admin user</strong><small>admin.cge@coreterra-geo.com</small></div></div></div></aside>
+    <main className="admin-main"><header className="admin-topbar"><div><span>CORETERRA / ADMIN</span><b>/</b><strong>NEWS MANAGEMENT</strong></div><Link to="/" aria-label="Open public website">Open website <span aria-hidden="true">↗</span></Link></header><div className="admin-content"><div className="admin-heading"><div><p className="admin-eyebrow">NEWS MANAGEMENT / OVERVIEW</p><h1>Keep the story moving.</h1><p>Manage the editorial notes that keep Coreterra connected to the field, data, and engineering decisions.</p></div><button className="admin-primary-action" type="button" onClick={() => setNotice('News editor is ready to connect to your content service.')}>+ Add news</button></div>{notice && <p className="admin-notice" role="status">{notice}</p>}<section className="admin-stats" aria-label="News summary"><div><span>Total articles</span><strong>{newsArticles.length}</strong><small>Across all topics</small></div><div><span>Published</span><strong>{newsArticles.length}</strong><small className="is-positive">+4 this month</small></div><div><span>Drafts</span><strong>0</strong><small>Nothing waiting</small></div><div><span>Last update</span><strong>28</strong><small>September 2026</small></div></section><section className="admin-news-panel"><div className="admin-panel-heading"><div><p className="admin-eyebrow">EDITORIAL LIBRARY</p><h2>All news</h2></div><span>{articles.length} result{articles.length === 1 ? '' : 's'}</span></div><div className="admin-toolbar"><label className="admin-search"><span>Search</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search title or category" /></label><label className="admin-filter"><span>Status</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option>All status</option><option>Published</option><option>Draft</option></select></label></div><div className="admin-table" role="table" aria-label="News articles"><div className="admin-table-head" role="row"><span>ARTICLE</span><span>CATEGORY</span><span>CREATED_AT</span><span>STATUS</span><span>ACTION</span></div>{articles.map((article) => <div className="admin-table-row" role="row" key={article.slug}><div className="admin-article-cell"><img src="/hero-geotechnical-poster.png" alt="" style={{ objectPosition: article.imagePosition }} /><div><strong>{article.title}</strong><small>{article.slug}</small></div></div><span className="admin-category-cell">{article.category.split(' / ')[1]}</span><span className="admin-date-cell">{article.createdAt}</span><span className="admin-status">Published</span><Link className="admin-view-action" to={`/news/${article.slug}`}>View <span aria-hidden="true">-&gt;</span></Link></div>)}</div>{articles.length === 0 && <p className="admin-empty">No news matches the current filters.</p>}</section></div></main>
+  </div>
+}
+
+export default AdminDashboard
