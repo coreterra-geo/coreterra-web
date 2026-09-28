@@ -14,6 +14,156 @@ const clientPartners = ['CLIENT MARK / 01', 'CLIENT MARK / 02', 'CLIENT MARK / 0
 const highlightedNews = allNewsArticles.slice(0, 3)
 const newsArticles = highlightedNews
 
+const heroSlides = [
+  { src: '/hero-engineer-stipple.avif', alt: 'Field engineer wearing a safety helmet rendered as a high-contrast monochrome stipple portrait' },
+  { src: '/hero-deer-stipple.avif', alt: 'Sambar deer rendered as a monochrome stipple illustration' },
+  { src: '/hero-excavator-stipple.avif', alt: 'Tracked excavator rendered as a monochrome stipple illustration' },
+] as const
+
+const HERO_PARTICLE_COUNT = 9000
+
+function HeroMedia() {
+  const [activeSlide, setActiveSlide] = useState(0)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) return
+
+    let frameId = 0
+    let width = 0
+    let height = 0
+    let active = 0
+    let next = 1
+    let lastCycle = -1
+    let startedAt = 0
+    let targets: Float32Array[] = []
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const scatter = new Float32Array(HERO_PARTICLE_COUNT * 2)
+    for (let index = 0; index < HERO_PARTICLE_COUNT; index += 1) {
+      scatter[index * 2] = ((index * 97) % 10000) / 10000
+      scatter[index * 2 + 1] = ((index * 193) % 10000) / 10000
+    }
+
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect()
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5)
+      width = Math.max(1, Math.floor(bounds.width * ratio))
+      height = Math.max(1, Math.floor(bounds.height * ratio))
+      canvas.width = width
+      canvas.height = height
+    }
+
+    const sampleImage = (source: HTMLImageElement) => {
+      const sourceCanvas = document.createElement('canvas')
+      sourceCanvas.width = 640
+      sourceCanvas.height = 360
+      const sourceContext = sourceCanvas.getContext('2d')
+      if (!sourceContext) return new Float32Array(HERO_PARTICLE_COUNT * 2)
+      sourceContext.drawImage(source, 0, 0, 640, 360)
+      const pixels = sourceContext.getImageData(0, 0, 640, 360).data
+      const points: Array<[number, number]> = []
+      for (let y = 0; y < 360; y += 2) {
+        for (let x = 0; x < 640; x += 2) {
+          const offset = (y * 640 + x) * 4
+          const brightness = (pixels[offset] + pixels[offset + 1] + pixels[offset + 2]) / 3
+          const darkness = Math.max(0, Math.min(1, (242 - brightness) / 205))
+          const noise = ((x * 9283 + y * 6899) % 997) / 997
+          if (darkness > .06 && noise < darkness * .92) points.push([x / 640, y / 360])
+        }
+      }
+      const target = new Float32Array(HERO_PARTICLE_COUNT * 2)
+      for (let index = 0; index < HERO_PARTICLE_COUNT; index += 1) {
+        const point = points[(index * 73) % Math.max(1, points.length)] ?? [.5, .5]
+        target[index * 2] = point[0]
+        target[index * 2 + 1] = point[1]
+      }
+      return target
+    }
+
+    const ease = (value: number) => {
+      const clamped = Math.max(0, Math.min(1, value))
+      return clamped * clamped * (3 - 2 * clamped)
+    }
+    const draw = (time: number) => {
+      if (targets.length !== heroSlides.length) {
+        frameId = requestAnimationFrame(draw)
+        return
+      }
+
+      const elapsed = time - startedAt
+      const holdDuration = 5200
+      const scatterDuration = 1400
+      const formDuration = 2600
+      const cycleDuration = holdDuration + scatterDuration + formDuration
+      const cycleTime = reduceMotion ? 0 : elapsed % cycleDuration
+      const cycleIndex = reduceMotion ? 0 : Math.floor(elapsed / cycleDuration)
+      const phase = cycleTime < holdDuration ? 0 : cycleTime < holdDuration + scatterDuration ? 1 : 2
+      const phaseTime = phase === 0 ? cycleTime / holdDuration : phase === 1 ? (cycleTime - holdDuration) / scatterDuration : (cycleTime - holdDuration - scatterDuration) / formDuration
+
+      if (cycleIndex !== lastCycle) {
+        if (lastCycle >= 0) {
+          active = next
+          next = (active + 1) % heroSlides.length
+          setActiveSlide(active)
+        }
+        lastCycle = cycleIndex
+      }
+
+      context.clearRect(0, 0, width, height)
+      context.fillStyle = '#242321'
+      context.globalAlpha = phase === 1 ? .9 : 1
+      const currentTarget = targets[active]
+      const nextTarget = targets[next]
+      for (let index = 0; index < HERO_PARTICLE_COUNT; index += 1) {
+        const offset = index * 2
+        const currentX = currentTarget[offset]
+        const currentY = currentTarget[offset + 1]
+        const nextX = nextTarget[offset]
+        const nextY = nextTarget[offset + 1]
+        const side = index % 2 === 0 ? 1 : -1
+        const spread = .22 + scatter[offset] * .42
+        const burstX = currentX + side * spread
+        const burstY = currentY + (scatter[offset + 1] - .5) * .28 - spread * .08
+        const burstProgress = ease(phaseTime)
+        const pointX = phase === 0 ? currentX : phase === 1 ? currentX + (burstX - currentX) * burstProgress : burstX + (nextX - burstX) * burstProgress
+        const pointY = phase === 0 ? currentY : phase === 1 ? currentY + (burstY - currentY) * burstProgress : burstY + (nextY - burstY) * burstProgress
+        const motionScale = phase === 1 ? Math.sin(burstProgress * Math.PI) : 0
+        const sizeSeed = (index * 37) % 100
+        const baseSize = sizeSeed > 92 ? 2.8 : sizeSeed > 66 ? 2.15 : 1.65
+        const size = baseSize * (1 + motionScale * .55)
+        context.fillRect(pointX * width, pointY * height, size, size)
+      }
+      context.globalAlpha = 1
+      if (!reduceMotion) frameId = requestAnimationFrame(draw)
+    }
+
+    const images = heroSlides.map(() => new Image())
+    Promise.all(images.map((image, index) => new Promise<void>((resolve) => {
+      image.onload = () => resolve()
+      image.src = heroSlides[index].src
+    }))).then(() => {
+      targets = images.map(sampleImage)
+      startedAt = performance.now()
+      resize()
+      draw(startedAt)
+      if (!reduceMotion) frameId = requestAnimationFrame(draw)
+    })
+
+    resize()
+    const resizeObserver = new ResizeObserver(resize)
+    resizeObserver.observe(canvas)
+    return () => { cancelAnimationFrame(frameId); resizeObserver.disconnect() }
+  }, [])
+
+  return <div className="hero-media" aria-label="Coreterra visual sequence">
+    <canvas ref={canvasRef} className="hero-particle-canvas" role="img" aria-label={heroSlides[activeSlide].alt} />
+    <div className="hero-media-frame" aria-hidden="true"><span className="hero-media-frame-dot" /> VISUAL STUDY / 0{activeSlide + 1}</div>
+    <div className="hero-progress" aria-hidden="true">{heroSlides.map((slide, index) => <i className={index === activeSlide ? 'is-active' : ''} key={slide.src} />)}</div>
+  </div>
+}
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -86,7 +236,7 @@ function HomePage() {
     <Navbar />
 
     <main>
-      <section ref={heroRef} className="hero" aria-labelledby="hero-title"><div className="hero-media"><img src="/hero-geotechnical-poster.png" alt="Geotechnical drilling rig carrying out field investigation in rugged mountainous terrain" width="1672" height="941" fetchPriority="high" decoding="async" /></div><div className="hero-scrim" aria-hidden="true" /><div className="hero-contours" aria-hidden="true"><span /><span /><span /><span /></div><div className="container hero-content"><div className="eyebrow eyebrow--light"><span className="eyebrow-rule" /> Geotechnical &amp; geoengineering consultancy</div><h1 id="hero-title">Understand the ground.<em>Engineer with confidence.</em></h1><p className="hero-copy">Better engineering decisions begin with a clear understanding of soil, rock, geology, and the conditions beneath a site.</p></div><div className="hero-meta" aria-hidden="true"><span>FIELD INVESTIGATION</span><span>GROUND CONDITIONS</span><span className="hero-meta-index">01 <i /> 04</span></div></section>
+      <section ref={heroRef} className="hero" aria-labelledby="hero-title"><HeroMedia /><div className="hero-scrim" aria-hidden="true" /><div className="hero-contours" aria-hidden="true"><span /><span /><span /><span /></div><div className="container hero-content"><div className="eyebrow eyebrow--light"><span className="eyebrow-rule" /> Geotechnical &amp; geoengineering consultancy</div><h1 id="hero-title">Understand the ground.<em>Engineer with confidence.</em></h1><p className="hero-copy">Better engineering decisions begin with a clear understanding of soil, rock, geology, and the conditions beneath a site.</p></div><div className="hero-meta" aria-hidden="true"><span>FIELD INVESTIGATION</span><span>GROUND CONDITIONS</span><span className="hero-meta-index">01 <i /> 04</span></div></section>
 
       <section id="approach" className="premise section-paper" data-reveal><div className="container premise-grid"><div className="section-label"><span>01</span><span>THE PREMISE</span></div><div className="premise-copy"><p className="kicker">The work starts below the surface</p><h2>Engineering confidence comes from <span>grounded understanding.</span></h2><p className="lead">Every site carries its own story in the soil, the rock, the water, and the landscape. Coreterra helps make that story legible—so technical decisions are based on evidence that can be understood, tested, and applied.</p><div className="rule-note"><span className="rule-note-mark">-&gt;</span><span>From what is observed in the field<br />to what can be designed with clarity.</span></div></div><div className="premise-diagram" aria-hidden="true"><div className="diagram-axis"><span>GROUND SURFACE</span><i /></div><div className="strata strata-one"><i /><i /><i /></div><div className="strata strata-two"><i /><i /><i /></div><div className="depth-mark"><span>UNDERSTAND</span><b>v</b><span>DECIDE</span></div></div></div></section>
 
