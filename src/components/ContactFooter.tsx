@@ -20,8 +20,7 @@ export default function ContactFooter() {
           <linearGradient id="footer-stripe-opacity"><stop stopColor="black" /><stop offset=".35" stopColor="white" /></linearGradient>
           <mask id="footer-stripe-fade"><rect width="1000" height="650" fill="url(#footer-stripe-opacity)" /></mask>
         </defs>
-        <image href="/about-yard-clean.png" width="1000" height="650" preserveAspectRatio="xMidYMid slice" filter="url(#footer-monochrome)" opacity=".72" />
-        <image href="/about-yard-clean.png" width="1000" height="650" preserveAspectRatio="xMidYMid slice" filter="url(#footer-monochrome)" opacity=".84" />
+        <image href="/about-yard-clean.webp" width="1000" height="650" preserveAspectRatio="xMidYMid slice" filter="url(#footer-monochrome)" opacity=".95" />
         <rect width="1000" height="650" fill="url(#footer-shade)" opacity=".76" />
         <rect width="1000" height="650" fill="#8b623d" clipPath="url(#footer-bronze-shapes)" opacity=".16" style={{ mixBlendMode: 'multiply' }} />
         <g mask="url(#footer-outside-shapes)"><path d="M0 438 1000 548v102H0Z" fill="#030404" /><path d="M0 456 1000 566v84H0Z" fill="url(#footer-diagonal-lines)" mask="url(#footer-stripe-fade)" /></g>

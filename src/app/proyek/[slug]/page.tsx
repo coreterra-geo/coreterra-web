@@ -16,10 +16,24 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const project = projects.find((item) => item.slug === slug)
-  if (!project) return { title: `${siteCopy.projectDetail.notFound} | Coreterra` }
+  if (!project) return { title: siteCopy.projectDetail.notFound }
   return {
-    title: `${project.title} | Coreterra`,
+    title: project.title,
     description: `${project.scope} Lokasi: ${project.location}.`,
+    alternates: { canonical: `/proyek/${project.slug}` },
+    openGraph: {
+      type: 'article',
+      title: `${project.title} | Coreterra`,
+      description: `${project.scope} Lokasi: ${project.location}.`,
+      url: `/proyek/${project.slug}`,
+      images: [{ url: project.image, alt: project.imageAlt }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} | Coreterra`,
+      description: `${project.scope} Lokasi: ${project.location}.`,
+      images: [project.image],
+    },
   }
 }
 
@@ -30,9 +44,19 @@ export default async function ProjectPage({ params }: PageProps) {
 
   const currentIndex = projects.findIndex((item) => item.slug === slug)
   const nextProject = projects[(currentIndex + 1) % projects.length]
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://coreterra-geo.com/' },
+      { '@type': 'ListItem', position: 2, name: siteCopy.projectSection.eyebrow, item: 'https://coreterra-geo.com/#projects' },
+      { '@type': 'ListItem', position: 3, name: project.title, item: `https://coreterra-geo.com/proyek/${project.slug}` },
+    ],
+  }
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }} />
       <main className="min-h-screen bg-coreterra-paper font-coreterra text-[var(--coreterra-charcoal-deep)]">
         <header className="flex items-center justify-between gap-6 border-b border-[#bcb7af] px-[9.6%] py-7 max-[1100px]:px-[8%] max-[767px]:px-[6%] max-[767px]:py-[18px]">
           <Link className="inline-flex items-center gap-[14px] [&>span:last-child>strong]:block [&>span:last-child>strong]:whitespace-nowrap [&>span:last-child>strong]:text-[19px] [&>span:last-child>strong]:leading-none [&>span:last-child>strong]:font-extrabold [&>span:last-child>strong]:tracking-[.19em] [&>span:last-child>small]:mt-[6px] [&>span:last-child>small]:block [&>span:last-child>small]:whitespace-nowrap [&>span:last-child>small]:text-[8px] [&>span:last-child>small]:tracking-[.08em] [&>span:last-child>small]:max-[767px]:text-[7px] [&>span:last-child>strong]:max-[767px]:text-[15px]" href="/#home" aria-label={siteCopy.brand.homeLink}><span className="grid size-[52px] flex-none place-items-center rounded-full border border-[var(--coreterra-bronze-dark)] bg-[#f1eee8] p-[5px] max-[767px]:size-[42px]"><Image className="size-full object-contain" src="/logo.png" alt="" width={80} height={80} /></span><span><strong>{siteCopy.brand.name}</strong><small>{siteCopy.brand.descriptor}</small></span></Link>
@@ -48,7 +72,7 @@ export default async function ProjectPage({ params }: PageProps) {
             <p className="mt-[25px] mb-0 max-w-[46ch] text-lg leading-copy text-coreterra-text-secondary max-[767px]:text-base">{project.scope}</p>
             <div className="mt-auto flex grow-0 justify-between gap-4 self-stretch pt-11 text-[11px] font-bold tracking-[.12em] text-coreterra-text-muted max-[767px]:mt-10 max-[767px]:pt-0" aria-hidden="true"><span>{siteCopy.projectDetail.fileLabel}</span><span>{project.number}—{String(projects.length).padStart(2, '0')}</span></div>
           </div>
-          <ProjectVisual project={project} className="relative min-h-[410px] h-auto self-stretch after:absolute after:right-0 after:bottom-0 after:h-[30%] after:w-[24%] after:[clip-path:polygon(0_100%,100%_0,100%_100%)] after:bg-[#8b623d75] after:content-[''] max-[1100px]:min-h-[360px] max-[767px]:min-h-[285px]" />
+          <ProjectVisual project={project} priority sizes="(max-width: 767px) 88vw, (max-width: 1100px) 44vw, 48vw" className="relative min-h-[410px] h-auto self-stretch after:absolute after:right-0 after:bottom-0 after:z-[1] after:h-[30%] after:w-[24%] after:[clip-path:polygon(0_100%,100%_0,100%_100%)] after:bg-[#8b623d75] after:content-[''] max-[1100px]:min-h-[360px] max-[767px]:min-h-[285px]" />
         </section>
 
         <section className="grid grid-cols-4 gap-0 border-y border-[#b9b3aa] bg-[#eeece7] px-[9.6%] max-[1100px]:px-[8%] max-[767px]:grid-cols-2 max-[767px]:px-[6%] [&>div]:min-h-[132px] [&>div]:border-r [&>div]:border-[#c7c1b8] [&>div]:pt-[25px] [&>div]:pr-[22px] [&>div]:pb-6 [&>div:not(:first-child)]:pl-[22px] [&>div:last-child]:border-r-0 [&>div>span]:mb-[15px] [&>div>span]:block [&>div>span]:text-[10px] [&>div>span]:font-bold [&>div>span]:tracking-[.13em] [&>div>span]:text-[#756f66] [&>div>span]:uppercase [&>div>strong]:block [&>div>strong]:text-[15px] [&>div>strong]:leading-[1.45] [&>div>strong]:font-semibold [&>div>strong]:text-[#30322e] max-[767px]:[&>div]:min-h-[112px] max-[767px]:[&>div]:px-4 max-[767px]:[&>div]:py-5 max-[767px]:[&>div:not(:first-child)]:pl-4 max-[767px]:[&>div:nth-child(2)]:border-r-0 max-[767px]:[&>div:nth-child(-n+2)]:border-b max-[767px]:[&>div:nth-child(-n+2)]:border-[#c7c1b8] max-[767px]:[&>div>strong]:text-[13px]" aria-label={siteCopy.projectDetail.profileLabel}>
