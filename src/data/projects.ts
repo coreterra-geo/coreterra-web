@@ -14,6 +14,84 @@ export type Project = {
   imagePosition?: string
 }
 
+export const siteCopy = {
+  brand: {
+    name: 'CORETERRA',
+    descriptor: 'KONSULTAN GEOENGINEERING',
+    loaderTitle: 'Konsultan Geoengineering',
+    loading: 'Membaca data lapangan',
+    loadingContext: 'Coreterra / Geoengineering',
+    homeLink: 'Coreterra, kembali ke beranda',
+  },
+  navigation: {
+    menu: 'Menu',
+    about: 'Tentang',
+    services: 'Layanan',
+    projects: 'Proyek',
+    contact: 'Kontak',
+    footer: 'Navigasi footer',
+  },
+  hero: {
+    title: ['Kondisi lapangan.', 'Analisis geoteknik.', 'Arahan rekayasa.'],
+    description: ['Konsultansi geoengineering untuk pertambangan,', 'infrastruktur, energi, dan eksplorasi.'],
+    action: 'Lihat layanan',
+  },
+  about: {
+    eyebrow: 'Tentang Coreterra',
+    title: ['Mengenal kondisi', 'bawah permukaan'],
+    description: 'PT Coreterra Geo Engineering adalah konsultan geoengineering. Lingkup pengalamannya mencakup geoteknik tambang, investigasi fondasi, hidrologi–hidrogeologi, survei geofisika, dan eksplorasi untuk tambang, infrastruktur, serta energi.',
+  },
+  servicesSection: {
+    eyebrow: 'Bidang layanan',
+    title: ['Ruang lingkup', 'geoengineering.'],
+    description: 'Kajian dan investigasi disusun sesuai persoalan teknis, kondisi lokasi, serta data yang dibutuhkan untuk mengambil keputusan.',
+    itemLabel: 'Layanan',
+  },
+  services: [
+    { number: '01', title: 'Investigasi tanah & fondasi', description: 'Pengeboran, pengujian lapangan, dan interpretasi kondisi bawah permukaan untuk kebutuhan fondasi dan prasarana.', detail: 'Pengeboran / SPT / CPT' },
+    { number: '02', title: 'Geoteknik tambang & infrastruktur', description: 'Kajian tanah dan batuan, stabilitas lereng, serta kondisi tanah dasar untuk tambang dan jalan angkut.', detail: 'Lereng / jalan angkut' },
+    { number: '03', title: 'Hidrologi & hidrogeologi', description: 'Penilaian air permukaan dan air tanah sebagai bagian dari kajian tambang, drainase, dan pengelolaan risiko geoteknik.', detail: 'Air permukaan / air tanah' },
+    { number: '04', title: 'Survei geofisika & eksplorasi', description: 'Survei geolistrik, geomagnetik, dan pengeboran eksplorasi untuk memahami struktur serta sebaran material bawah permukaan.', detail: 'Geolistrik / geomagnetik' },
+  ],
+  projectSection: {
+    eyebrow: 'Pengalaman proyek',
+    title: ['Kajian di beragam', 'kondisi lapangan.'],
+    description: 'Contoh pekerjaan Coreterra mencakup lokasi tambang, jalan angkut, fondasi, fasilitas energi, dan area eksplorasi di Indonesia serta Malaysia.',
+    explore: 'Jelajahi proyek',
+    previous: 'Lihat proyek sebelumnya',
+    next: 'Lihat proyek berikutnya',
+    listLabel: 'Daftar pengalaman proyek; geser untuk melihat proyek lainnya',
+    readMore: 'Baca selengkapnya',
+    positionLabel: 'Posisi daftar proyek',
+  },
+  footer: {
+    contactTitle: ['Mari mulai dari', 'kondisi lapangan.'],
+    intro: 'Ceritakan kebutuhan kajian dan konteks lokasi Anda. Kami dapat memulai percakapan dari data yang sudah tersedia.',
+    office: 'Alamat kantor',
+    address: ['Gardenia Estate Blok A5 No. 12A', 'Ciputat, Banten — Jawa Barat', 'Indonesia'],
+    contactMethods: 'Kontak kami',
+    emailAction: 'Kirim email ke Coreterra',
+    emailNote: 'Kirim kebutuhan kajian dan konteks lokasi.',
+    phoneAction: 'Hubungi Coreterra melalui telepon',
+    phoneNote: 'Diskusikan kebutuhan teknis secara langsung.',
+    copyright: 'PT Coreterra Geo Engineering.',
+  },
+  projectDetail: {
+    client: 'Klien', location: 'Lokasi', category: 'Klasifikasi', scope: 'Lingkup utama',
+    eyebrow: 'Pengalaman proyek', summary: 'Ringkasan pekerjaan', title: 'Konteks & lingkup.',
+    activities: 'Rangkaian pekerjaan', purpose: 'Arah penggunaan hasil',
+    next: 'Proyek berikutnya', back: 'Kembali ke pengalaman proyek',
+    navigation: 'Navigasi proyek', profileLabel: 'Profil proyek', allProjects: 'Semua proyek', notFound: 'Proyek tidak ditemukan', fileLabel: 'CT / PROJECT FILE', sectionLabel: '01 / KAJIAN',
+  },
+  notFound: {
+    status: '404 / Halaman tidak ditemukan',
+    title: 'Halaman tidak tersedia.',
+    description: 'Alamat yang Anda buka tidak ditemukan. Kembali ke beranda untuk melihat layanan dan pengalaman proyek Coreterra.',
+    action: 'Kembali ke beranda',
+  },
+  fieldDocumentation: 'Dokumentasi lapangan',
+} as const
+
 export const projects: Project[] = [
   {
     number: '01', slug: 'kajian-geoteknik-tambang-kalimantan-timur-tahap-1', title: 'Kajian geoteknik tambang — tahap 1', client: 'PT Bina Insan Sukses Mandiri', location: 'Kalimantan Timur, Indonesia', category: 'Geoteknik tambang',

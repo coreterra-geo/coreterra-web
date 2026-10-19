@@ -10,6 +10,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.10",
+    "motion": "^14.4.0",
     "next": "latest",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"

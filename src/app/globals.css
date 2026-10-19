@@ -17,69 +17,6 @@ button:focus-visible {
   outline-offset: 5px;
 }
 
-.site-loader--hidden {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .85s cubic-bezier(.2, .65, .25, 1), visibility 0s linear .85s;
-}
-
-#main-nav.is-open { display: flex; }
-
-@keyframes loader-draw { to { stroke-dashoffset: 0; } }
-@keyframes loader-breathe { 0%, 100% { transform: scale(.98); } 50% { transform: scale(1.02); } }
-@keyframes loader-progress { to { transform: translateX(365%); } }
-@keyframes hero-art-drift { from { transform: translate3d(-.4%, 0, 0) scale(1); } to { transform: translate3d(.4%, -.6%, 0) scale(1.015); } }
-@keyframes service-icon-in { from { opacity: 0; transform: translateY(8px) scale(.88) rotate(-4deg); } to { opacity: 1; transform: none; } }
-@keyframes contour-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
-
-@layer components {
-  [data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .75s cubic-bezier(.2, .65, .25, 1), transform .75s cubic-bezier(.2, .65, .25, 1);
-  }
-
-  [data-reveal].is-visible { opacity: 1; transform: none; }
-  .hero-copy[data-reveal] { transform: translateY(20px); transition-duration: .9s; }
-  .hero-copy[data-reveal] > * { opacity: 0; transform: translateY(14px); transition: opacity .65s ease, transform .65s cubic-bezier(.2, .65, .25, 1); }
-  .hero-copy[data-reveal].is-visible > * { opacity: 1; transform: none; }
-  .hero-copy[data-reveal].is-visible > *:nth-child(1) { transition-delay: .08s; }
-  .hero-copy[data-reveal].is-visible > *:nth-child(2) { transition-delay: .2s; }
-  .hero-copy[data-reveal].is-visible > *:nth-child(3) { transition-delay: .32s; }
-  .service-card[data-reveal] { transform: translateY(26px); transition: opacity .7s cubic-bezier(.2, .65, .25, 1), transform .7s cubic-bezier(.2, .65, .25, 1), border-color .3s ease, box-shadow .3s ease; }
-  .service-card[data-reveal].is-visible { transform: none; }
-  .service-card[data-reveal]:nth-child(2) { transition-delay: .08s; }
-  .service-card[data-reveal]:nth-child(3) { transition-delay: .16s; }
-  .service-card[data-reveal]:nth-child(4) { transition-delay: .24s; }
-  .service-card.is-visible .service-diagram { animation: service-icon-in .75s cubic-bezier(.2, .65, .25, 1) both; }
-}
-
-.scroll-cue[data-reveal] { transform: rotate(45deg) translateY(10px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .65, .25, 1); }
-.scroll-cue[data-reveal].is-visible { transform: rotate(45deg); }
-@layer components {
-  .project-card[data-reveal]:nth-child(2) { transition-delay: .08s; }
-  .project-card[data-reveal]:nth-child(3) { transition-delay: .16s; }
-  .project-card[data-reveal]:nth-child(4) { transition-delay: .24s; }
-  .project-card[data-reveal]:nth-child(5) { transition-delay: .32s; }
-  .project-card[data-reveal]:nth-child(6) { transition-delay: .4s; }
-  .project-card[data-reveal]:nth-child(7) { transition-delay: .48s; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .loader-contour, .loader-mark, .loader-progress-bar { animation: none; }
-  .loader-progress-bar { width: 100%; transform: none; }
-  .site-loader, .site-shell { transition: none; }
-  .site-shell { transform: none; }
-  [data-reveal], [data-reveal].is-visible { opacity: 1; transform: none; transition: none; }
-  .hero-copy[data-reveal] > *, .hero-copy[data-reveal].is-visible > * { opacity: 1; transform: none; transition: none; }
-  .scroll-cue[data-reveal], .scroll-cue[data-reveal].is-visible { transform: rotate(45deg); }
-  .hero-art, .outline-decoration { animation: none; }
-  .service-card[data-reveal], .service-card[data-reveal].is-visible { transform: none; transition: none; }
-  .service-card.is-visible .service-diagram { animation: none; }
-  .project-list { scroll-behavior: auto; }
-  .project-card article, .project-visual, .project-read-more span, .project-controls button, .project-page-back span, .contact-method, .contact-arrow { transition: none; }
-  .project-card:hover article, .project-card:focus-within article, .project-controls button:hover:not(:disabled), .contact-method:hover .contact-arrow { transform: none; }
-  .contact-method:hover { padding-left: 0; }
 }
