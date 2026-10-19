@@ -1,20 +1,106 @@
 @import "tailwindcss";
 
 :root {
+  /* Brand palette */
   --coreterra-charcoal: #292827;
   --coreterra-charcoal-deep: #171716;
   --coreterra-bronze: #8b623d;
   --coreterra-bronze-dark: #684628;
   --coreterra-bronze-light: #b58a60;
   --coreterra-off-white: #f1eee8;
+
+  /* Typography */
+  --coreterra-font-sans: Arial, Helvetica, sans-serif;
+  --coreterra-font-display: Arial, Helvetica, sans-serif;
+  --coreterra-text-2xs: 8px;
+  --coreterra-text-xs: 12px;
+  --coreterra-text-sm: 14px;
+  --coreterra-text-base: 16px;
+  --coreterra-text-lg: 18px;
+  --coreterra-text-xl: 20px;
+  --coreterra-text-2xl: 24px;
+  --coreterra-text-3xl: 30px;
+  --coreterra-text-display: clamp(40px, 4.1vw, 64px);
+  --coreterra-text-hero: 3.05cqw;
+  --coreterra-text-display-tablet: clamp(36px, 4.7vw, 52px);
+  --coreterra-text-page-title: clamp(37px, 9vw, 52px);
+  --coreterra-text-about-title: clamp(30px, 2.7cqw, 44px);
+  --coreterra-text-section-title: clamp(34px, 3.1cqw, 46px);
+  --coreterra-text-section-title-tablet: clamp(25px, 3vw, 32px);
+  --coreterra-text-section-title-mobile: clamp(28px, 7vw, 38px);
+  --coreterra-text-project-overview-title: clamp(35px, 3.2vw, 48px);
+  --coreterra-text-card-title: clamp(21px, 1.7cqw, 25px);
+  --coreterra-text-contact: clamp(19px, 2cqw, 29px);
+  --coreterra-leading-tight: 1.08;
+  --coreterra-leading-heading: 1.2;
+  --coreterra-leading-copy: 1.65;
+  --coreterra-leading-project-title: 1.04;
+  --coreterra-tracking-tight: -0.035em;
+  --coreterra-tracking-brand: 0.2em;
+  --coreterra-tracking-eyebrow: 0.09em;
+
+  /* Supporting text and interaction */
+  --coreterra-text-primary: #434640;
+  --coreterra-text-secondary: #555550;
+  --coreterra-text-muted: #6c665e;
+  --coreterra-color-paper: #e9eaea;
+  --coreterra-color-paper-warm: #e3e0d9;
+  --coreterra-color-ink-soft: #47321f;
+  --coreterra-focus-width: 2px;
+  --coreterra-focus-offset: 5px;
+  --coreterra-radius-card: 12px;
+}
+
+@theme inline {
+  --font-coreterra: var(--coreterra-font-sans);
+  --font-display: var(--coreterra-font-display);
+  --text-xs: var(--coreterra-text-xs);
+  --text-sm: var(--coreterra-text-sm);
+  --text-base: var(--coreterra-text-base);
+  --text-lg: var(--coreterra-text-lg);
+  --text-xl: var(--coreterra-text-xl);
+  --text-2xl: var(--coreterra-text-2xl);
+  --text-3xl: var(--coreterra-text-3xl);
+  --text-2xs: var(--coreterra-text-2xs);
+  --text-display: var(--coreterra-text-display);
+  --text-hero: var(--coreterra-text-hero);
+  --text-display-tablet: var(--coreterra-text-display-tablet);
+  --text-page-title: var(--coreterra-text-page-title);
+  --text-about-title: var(--coreterra-text-about-title);
+  --text-section-title: var(--coreterra-text-section-title);
+  --text-section-title-tablet: var(--coreterra-text-section-title-tablet);
+  --text-section-title-mobile: var(--coreterra-text-section-title-mobile);
+  --text-project-overview-title: var(--coreterra-text-project-overview-title);
+  --text-card-title: var(--coreterra-text-card-title);
+  --text-contact: var(--coreterra-text-contact);
+  --leading-tight-coreterra: var(--coreterra-leading-tight);
+  --leading-heading: var(--coreterra-leading-heading);
+  --leading-copy: var(--coreterra-leading-copy);
+  --leading-project-title: var(--coreterra-leading-project-title);
+  --tracking-tight-coreterra: var(--coreterra-tracking-tight);
+  --tracking-brand: var(--coreterra-tracking-brand);
+  --tracking-eyebrow: var(--coreterra-tracking-eyebrow);
+  --color-coreterra-paper: var(--coreterra-color-paper);
+  --color-coreterra-paper-warm: var(--coreterra-color-paper-warm);
+  --color-coreterra-ink-soft: var(--coreterra-color-ink-soft);
+  --color-coreterra-text-primary: var(--coreterra-text-primary);
+  --color-coreterra-text-secondary: var(--coreterra-text-secondary);
+  --color-coreterra-text-muted: var(--coreterra-text-muted);
+  --color-coreterra-bronze: var(--coreterra-bronze);
+  --color-coreterra-bronze-dark: var(--coreterra-bronze-dark);
+  --color-coreterra-bronze-light: var(--coreterra-bronze-light);
+  --color-coreterra-charcoal: var(--coreterra-charcoal);
+  --color-coreterra-charcoal-deep: var(--coreterra-charcoal-deep);
+  --color-coreterra-off-white: var(--coreterra-off-white);
+  --radius-xl: var(--coreterra-radius-card);
 }
 
 * { box-sizing: border-box; }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--coreterra-bronze-light);
-  outline-offset: 5px;
+  outline: var(--coreterra-focus-width) solid var(--coreterra-bronze-light);
+  outline-offset: var(--coreterra-focus-offset);
 }
 
 @media (prefers-reduced-motion: reduce) {
