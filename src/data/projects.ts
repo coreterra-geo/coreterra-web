@@ -123,7 +123,7 @@ export const projects: Project[] = [
     overview: 'Program pengeboran eksplorasi batugamping mengumpulkan informasi geologi dan geoteknik melalui pencatatan inti bor, penilaian perolehan inti, penanganan sampel, serta dokumentasi litologi. Informasi tersebut digunakan untuk memahami stratigrafi, sebaran, ketebalan, kualitas, dan kesinambungan batugamping.',
     purpose: 'Mendukung evaluasi sumber daya dan pemahaman awal untuk pengembangan tambang batugamping.',
     activities: ['Pengeboran eksplorasi batugamping', 'Pencatatan geologi dan geoteknik inti bor', 'Penilaian perolehan inti serta penanganan sampel', 'Dokumentasi litologi dan interpretasi kondisi bawah permukaan'],
-    image: '/WhatsApp Image 2026-10-18 at 10.53.07 PM.jpeg', imageAlt: 'Sampel inti batuan yang tersusun untuk dokumentasi eksplorasi geologi',
+    image: '/bamboo.jpeg', imageAlt: 'Sampel inti batuan yang tersusun untuk dokumentasi eksplorasi geologi',
   },
   {
     number: '05', slug: 'survei-geolistrik-pltm-jawa-barat', title: 'Survei geolistrik PLTM', client: 'PT Volta Indo Technology', location: 'Pongkor, Jawa Barat, Indonesia', category: 'Geofisika & energi',

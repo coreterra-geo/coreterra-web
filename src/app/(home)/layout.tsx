@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components -- Next.js route files also export metadata. */
 import type { Metadata } from 'next'
-import HomeInteractive from '@/components/HomeInteractive'
 
 export const metadata: Metadata = {
   title: 'Konsultan Geoteknik & Geoengineering di Indonesia',
@@ -8,6 +7,6 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-export default function Page() {
-  return <HomeInteractive />
+export default function HomeLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return children
 }
