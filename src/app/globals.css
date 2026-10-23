@@ -103,6 +103,20 @@ button:focus-visible {
   outline-offset: var(--coreterra-focus-offset);
 }
 
+.coreterra-service-card:focus-within {
+  border-color: #b58a60;
+  box-shadow: 0 14px 28px #28231d16;
+}
+
+.coreterra-project-card:focus-within {
+  border-color: #886342;
+  box-shadow: 0 16px 28px #28231d18;
+}
+
+.coreterra-project-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
